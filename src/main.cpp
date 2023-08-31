@@ -465,12 +465,14 @@ int main(int argc, char *  argv[])
     // Close the file
     inputFile.close();
 
+    /*
     std::cout << "Number of Points: " << numPoints << std::endl;
 
     // Print the read coordinates
     for (auto& coord : obscoordinates) {
         std::cout << "X: " << coord.x << " | Y: " << coord.y << std::endl;
     }
+    */
 
     std::vector<Node> nodes = generateNodes(obscoordinates);
     std::vector<std::tuple<Node, Node>> knn_nodes = KNN(nodes, obscoordinates);
