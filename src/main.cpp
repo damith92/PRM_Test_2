@@ -85,7 +85,7 @@ double measureNodeDistanceObs(Node a, ObsCoordinate b)
 
 //--------------------------------------------------------------------------------
 
-
+/*
 void printGoalPath(std::vector<Node> nodes, std::vector<std::tuple<Node, Node>> knn_nodes, std::vector<int> optimalNodes)
 {
 
@@ -133,6 +133,7 @@ void printGoalPath(std::vector<Node> nodes, std::vector<std::tuple<Node, Node>> 
 
     
 }
+*/
 //-------------------------------------------------
 
 
