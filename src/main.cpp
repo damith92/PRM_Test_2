@@ -411,7 +411,7 @@ void Graph::computeStarA(int vStart, int vGoal, std::vector<double> heuristic)
 
 
 
-int main(int argc, char *  argv[])
+int main()
 {
 
     std::vector<ObsCoordinate> obscoordinates;
