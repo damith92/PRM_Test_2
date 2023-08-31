@@ -454,8 +454,8 @@ int main()
         std::smatch match;
         if (std::regex_search(line, match, regex)) {
             ObsCoordinate obscoord;
-            obscoord.x = std::stod(match[1]);
-            obscoord.y = std::stod(match[2]);
+            obscoord.x = std::stof(match[1]);
+            obscoord.y = std::stof(match[2]);
             obscoordinates.push_back(obscoord);
         } else {
             std::cerr << "Error parsing coordinates from line: " << line << std::endl;
