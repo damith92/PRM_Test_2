@@ -454,8 +454,16 @@ int main()
         std::smatch match;
         if (std::regex_search(line, match, regex)) {
             ObsCoordinate obscoord;
-            obscoord.x = std::stof(match[1]);
-            obscoord.y = std::stof(match[2]);
+            //obscoord.x = std::stof(match[1]);
+            iss.clear();
+	        iss.str(match[1]) ;
+	        iss >> obscoord.x ;
+
+            //obscoord.y = std::stof(match[2]);
+            iss.clear();
+	        iss.str(match[2]) ;
+	        iss >> obscoord.y ;
+
             obscoordinates.push_back(obscoord);
         } else {
             std::cerr << "Error parsing coordinates from line: " << line << std::endl;
@@ -465,14 +473,14 @@ int main()
     // Close the file
     inputFile.close();
 
-    /*
+    
     std::cout << "Number of Points: " << numPoints << std::endl;
 
     // Print the read coordinates
     for (auto& coord : obscoordinates) {
         std::cout << "X: " << coord.x << " | Y: " << coord.y << std::endl;
     }
-    */
+    
 
     std::vector<Node> nodes = generateNodes(obscoordinates);
     std::vector<std::tuple<Node, Node>> knn_nodes = KNN(nodes, obscoordinates);
