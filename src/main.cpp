@@ -410,7 +410,7 @@ void Graph::computeStarA(int vStart, int vGoal, std::vector<double> heuristic)
 
 
 
-int main()
+int main(int argc, char *  argv[])
 {
 
     std::vector<ObsCoordinate> obscoordinates;
@@ -501,5 +501,5 @@ int main()
         std::cout << ii << " , ";
     }
 
-    printGoalPath(nodes, knn_nodes, g.optimalNodes);
+    //printGoalPath(nodes, knn_nodes, g.optimalNodes);
 }
