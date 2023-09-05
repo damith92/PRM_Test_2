@@ -499,7 +499,8 @@ int main()
         Node b = std::get<1>(knn_nodes[ii]);
 
         double dist = measureNodeDistance(a, b);
-        heuristic.push_back(measureNodeDistance(a, G_h));
+        //heuristic.push_back(measureNodeDistance(a, G_h));
+        heuristic.push_back(0); //run A* in worst case
 
         g.addEdge(a.id, b.id, dist);
     }
