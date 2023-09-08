@@ -1,5 +1,3 @@
-
-
 #include <iostream>
 #include <vector>
 #include <random>
@@ -20,7 +18,7 @@ int INF = std::numeric_limits<int>::max();
 
 // data
 
-int NODES = 1000; 
+int NODES = 100; 
 double RADIUS = 5;
 double startX = 0.5; 
 double startY = 1.0; 
@@ -50,7 +48,7 @@ class Graph
 private:
     int V;
 
-    std::list<std::pair<int, int>> *adj;
+    std::list<std::pair<double, int>> *adj;
 
 public:
     std::vector<int> optimalNodes;
@@ -61,9 +59,9 @@ public:
 
         this->V = v;
 
-        this->adj = new std::list<std::pair<int, int>>[this->V];
+        this->adj = new std::list<std::pair<double, int>>[this->V];
     }
-    void addEdge(int vStart, int vEnd, int cost);
+    void addEdge(int vStart, int vEnd, double cost);
     void Astar(int vStart, int vGoal, std::vector<bool> visited, std::vector<double> &heuristic);
     void computeStarA(int vStart, int vGoal, std::vector<double> heuristic);
 };
@@ -263,7 +261,7 @@ std::vector<Node> generateNodes(std::vector<ObsCoordinate> obscoordinates)
 
 //-------------------------------------------------------------------------------
 
-void Graph::addEdge(int vStart, int vEnd, int cost)
+void Graph::addEdge(int vStart, int vEnd, double cost)
 {
 
     this->adj[vStart].push_back(std::make_pair(cost, vEnd));
@@ -281,7 +279,7 @@ void Graph::addEdge(int vStart, int vEnd, int cost)
 void Graph::Astar(int vStart, int vGoal, std::vector<bool> visited, std::vector<double> &heuristic)
 {
 
-    std::vector<std::tuple<int, int, int>> path;
+    std::vector<std::tuple<double, int, int>> path;
     std::vector<double> functionFX(V, INF);
 
     std::set<std::pair<double, int>> AStar_set;
@@ -307,7 +305,7 @@ void Graph::Astar(int vStart, int vGoal, std::vector<bool> visited, std::vector<
         {
 
             int nodeGraph_i = (*i).second;
-            int nodeGraph_i_functionFX = (*i).first + heuristic[(*i).second];
+            double nodeGraph_i_functionFX = (*i).first + heuristic[(*i).second];
 
             // check the cost - functionFX for each neighbors of current vertex
             if (visited[nodeGraph_i] != true)
@@ -333,14 +331,14 @@ void Graph::Astar(int vStart, int vGoal, std::vector<bool> visited, std::vector<
 
     //---------------------------------------------------------------------
 
-    std::multiset<std::tuple<int, int>> init_mSet;
+    std::multiset<std::tuple<double, int>> init_mSet;
     init_mSet.insert(std::make_tuple(0, 0));
-    std::vector<std::multiset<std::tuple<int, int>>> routePath(V, init_mSet);
+    std::vector<std::multiset<std::tuple<double, int>>> routePath(V, init_mSet);
 
     for (int pathV = 1; pathV < V; pathV++)
     {
 
-        std::multiset<std::tuple<int, int>> to_routePath;
+        std::multiset<std::tuple<double, int>> to_routePath;
 
         for (auto &ii : path)
         {
@@ -366,7 +364,7 @@ void Graph::Astar(int vStart, int vGoal, std::vector<bool> visited, std::vector<
     while (previous != 0)
     {
 
-        std::set<std::tuple<int, int>> minFx;
+        std::set<std::tuple<double, int>> minFx;
 
         for (auto &ii : routePath[previous])
         {
@@ -377,7 +375,7 @@ void Graph::Astar(int vStart, int vGoal, std::vector<bool> visited, std::vector<
         auto it = minFx.begin();
         previous = std::get<1>(*it);
 
-        int min_path_i = std::get<0>(*it);
+        double min_path_i = std::get<0>(*it);
 
         optimalPath.push_back(previous);
     }
@@ -499,8 +497,10 @@ int main()
         Node b = std::get<1>(knn_nodes[ii]);
 
         double dist = measureNodeDistance(a, b);
-        //heuristic.push_back(measureNodeDistance(a, G_h));
-        heuristic.push_back(0); //run A* in worst case
+
+        //heuristic.push_back(0);
+
+        heuristic.push_back(measureNodeDistance(a, G_h));
 
         g.addEdge(a.id, b.id, dist);
     }
