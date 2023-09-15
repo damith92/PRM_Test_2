@@ -12,6 +12,7 @@
 #include <fstream>
 #include <sstream>
 #include <regex>
+#include <chrono>
 
 int INF = std::numeric_limits<int>::max();
 
@@ -242,8 +243,10 @@ std::vector<Node> generateNodes(std::vector<ObsCoordinate> obscoordinates)
 
     std::vector<Node> vecNodes;
     std::vector<Node> vecNodesEx;
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    //std::random_device rd;
+    unsigned int seed_1 = 752;
+    //std::mt19937 gen(rd());
+    std::mt19937 gen(seed_1);
     for (int ii = 1; ii < NODES + 1; ii++)
     {
 
@@ -491,6 +494,8 @@ int main()
         std::cout << "X: " << coord.x << " | Y: " << coord.y << std::endl;
     }
     
+    // Get the current time before running the program
+    auto start_time = std::chrono::high_resolution_clock::now();
 
     std::vector<Node> nodes = generateNodes(obscoordinates);
     std::vector<std::tuple<Node, Node>> knn_nodes = KNN(nodes, obscoordinates);
@@ -517,6 +522,15 @@ int main()
     }
 
     g.computeStarA(startId, goalId, heuristic);
+
+    // Get the current time after running the program
+    auto end_time = std::chrono::high_resolution_clock::now();
+
+    // Calculate the elapsed time in milliseconds
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+
+    // Print the elapsed time
+    std::cout << "Elapsed time: " << duration.count() << " milliseconds" << std::endl;
 
     for (auto &ii : g.optimalNodes)
     {
